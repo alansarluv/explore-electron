@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1>Title info</h1>
+  <form action="">
+    <div>
+      <label for="">Select a video</label>
+      <br />
+      <input type="file" name="" id="" accept="video/*" />
+    </div>
+    <div>
+      <button type="submit">Get Info</button>
+    </div>
+  </form>
+
+  <script>
+    const electron = require('electron');
+    const { ipcRenderer } = electron;
+
+    document.querySelector('form').addEventListener('submit', (event) => {
+      event.preventDefault();
+      const { path } = document.querySelector('input').files[0];
+
+      // to communicate between mainWindow (index.html) vs electron app (index.js) you need ipcRenderer from electron
+      // to send data from mainWindow to electron app, ==> ipcRenderer.send('any_event_name_you_want');
+      // to receive data from electron app to mainWindow, ==> ipcMain.on('any_event_sent_from_mainWindow', () => {...});
+      // to send data from electron app to mainWindow, ==> mainWindow.webContenrs.send()
+      // to receive data from mainWindow to electron app, ==> ipcRenderer.on();
+
+      // you can write any event name you want to send in IPCrender, in this case we give a name video:submit
+      ipcRenderer.send('video:submit', path);
+
+
+    });
+
+  </script>
+</body>
+</html>
