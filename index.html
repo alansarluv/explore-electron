@@ -16,6 +16,7 @@
     <div>
       <button type="submit">Get Info</button>
     </div>
+    <h1 id="result"></h1>
   </form>
 
   <script>
@@ -35,7 +36,11 @@
       // you can write any event name you want to send in IPCrender, in this case we give a name video:submit
       ipcRenderer.send('video:submit', path);
 
-
+    });
+    
+    // listen for event from electron app
+    ipcRenderer.on('video:metadata', (event, duration) => {
+      const durationElm = document.getElementById('result').innerHTML = `Video duration is ${duration} second`;
     });
 
   </script>
