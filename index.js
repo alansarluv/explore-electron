@@ -3,6 +3,19 @@ const { app, BrowserWindow, ipcMain, Menu } = electron;
 const ffmpeg = require('fluent-ffmpeg'); 
 
 let mainWindow;
+let addWindow;
+
+function createAddWindow() {
+  addWindow = new BrowserWindow({
+    webPreferences: {
+      nodeIntegration: true
+    },
+    width: 300,
+    height: 200,
+    title: 'Add New Todo'
+  });
+  addWindow.loadURL(`file://${__dirname}/add.html`);
+}
 
 // menuTemplate is used for define all menu inside main navbar
 let menuTemplate = [];
@@ -10,9 +23,11 @@ menuTemplate.push(
   {
     label: 'File',
     submenu: [
-      { label: 'newTodo' },
-      {
-        label: 'Add a to do'
+      { 
+        label: 'New Todo',
+        click() {
+          createAddWindow();
+        }
       },
       {
         label: 'Quit',
@@ -37,6 +52,7 @@ app.on('ready', () => {
   mainWindow.loadURL(`file://${__dirname}/main.html`);
   // mainWindow.loadURL('https://hr.talenta.co'); we can reference url to any web as well
 
+  mainWindow.on('closed', () => app.quit());  // to quit electron on main window closed
   const mainMenu = Menu.buildFromTemplate(menuTemplate);
   Menu.setApplicationMenu(mainMenu);
 });
