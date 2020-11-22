@@ -15,7 +15,13 @@ function createAddWindow() {
     title: 'Add New Todo'
   });
   addWindow.loadURL(`file://${__dirname}/add.html`);
+  addWindow.on('close', () => addWindow = null); // if addWindow close then refer to null to free space & clean garbage memory
 }
+
+ipcMain.on('todo:add', (event, todo) => {
+  mainWindow.webContents.send('todo:add', todo);
+  addWindow.close();
+});
 
 // menuTemplate is used for define all menu inside main navbar
 let menuTemplate = [];
@@ -37,10 +43,26 @@ menuTemplate.push(
         }
       }
     ],
-  }
+  },
 )
 if (process.platform === 'darwin') {
   menuTemplate.unshift({ label: '' });
+}
+// open dev tools only on development process
+if (process.env.NODE_ENV !== 'production') {
+  menuTemplate.push({
+    label: 'Developer',
+    submenu: [
+      { role: 'reload' }, // electron has number of preset role options one of which is reload
+      {
+        label: 'Toggle developer view',
+        accelerator: process.platform === 'darwin' ? 'Command+Alt+I' : 'Ctrl+Shift+I',
+        click(item, focusedWindow) { // focusedWindow is an active window open on electron 
+          focusedWindow.toggleDevTools();
+        }
+      },
+    ]
+  });
 }
 
 app.on('ready', () => {

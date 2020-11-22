@@ -19,10 +19,16 @@
     <h1 id="result"></h1>
   </form>
 
+  <br />
+  <p>=========== =========== =========== =========== ===========</p>
+  <br />
+
+  <h1>My Todo's</h1>
+  <ul></ul>
   <script>
     const electron = require('electron');
     const { ipcRenderer } = electron;
-
+    // ==================================== video ====================================
     document.querySelector('form').addEventListener('submit', (event) => {
       event.preventDefault();
       const { path } = document.querySelector('input').files[0];
@@ -42,6 +48,16 @@
     ipcRenderer.on('video:metadata', (event, duration) => {
       const durationElm = document.getElementById('result').innerHTML = `Video duration is ${duration} second`;
     });
+    // ==================================== /video ====================================
+
+    // ==================================== todo ====================================
+    ipcRenderer.on('todo:add', (event, todo) => {
+      const li = document.createElement('li');
+      const text = document.createTextNode(todo);
+      li.appendChild(text);
+      document.querySelector('ul').appendChild(li);
+    });
+    // ==================================== /todo ====================================
 
   </script>
 </body>
