@@ -57,6 +57,10 @@
       li.appendChild(text);
       document.querySelector('ul').appendChild(li);
     });
+    ipcRenderer.on('todo:clear', () => {
+      console.log("indexhtml");
+      document.querySelector('ul').innerHTML = "";
+    });
     // ==================================== /todo ====================================
 
   </script>

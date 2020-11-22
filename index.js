@@ -36,6 +36,13 @@ menuTemplate.push(
         }
       },
       {
+        label: 'Clear Todos',
+        click() {
+          mainWindow.webContents.send('todo:clear');
+          console.log("indexjs");
+        }
+      },
+      {
         label: 'Quit',
         accelerator: process.platform === 'darwin' ? 'Command+Q' : 'Ctrl+Q', // used for hot keys (shortcut)
         click() {
