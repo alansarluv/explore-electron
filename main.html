@@ -27,7 +27,7 @@
       event.preventDefault();
       const { path } = document.querySelector('input').files[0];
 
-      // to communicate between mainWindow (index.html) vs electron app (index.js) you need ipcRenderer from electron
+      // to communicate between mainWindow (main.html) vs electron app (index.js) you need ipcRenderer from electron
       // to send data from mainWindow to electron app, ==> ipcRenderer.send('any_event_name_you_want');
       // to receive data from electron app to mainWindow, ==> ipcMain.on('any_event_sent_from_mainWindow', () => {...});
       // to send data from electron app to mainWindow, ==> mainWindow.webContenrs.send()
